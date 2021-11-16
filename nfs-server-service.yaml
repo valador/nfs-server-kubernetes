@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: nfs-server
+  name: nfs-server-svc
   namespace: nfs
 spec:
   ports:

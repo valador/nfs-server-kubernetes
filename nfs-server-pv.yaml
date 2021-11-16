@@ -10,6 +10,8 @@ kind: PersistentVolume
 metadata:
   name: nfs-local-pv
   namespace: nfs
+  labels:
+    storage-type: nfs-local-pv
 spec:
   capacity:
     storage: 10Gi
@@ -27,4 +29,4 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - nfs-server
+          - dev-srv # имя НОДЫ а не пода

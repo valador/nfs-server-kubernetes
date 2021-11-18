@@ -2,13 +2,15 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   name: nfs-server
-  namespace: nfs
+  # namespace: nfs
 spec:
   replicas: 1
   selector:
     role: nfs-server
   template:
     metadata:
+      annotations:
+          container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/erichough-nfs
       labels:
         role: nfs-server
     spec:
@@ -24,6 +26,10 @@ spec:
             containerPort: 111
         securityContext:
           privileged: true
+          # capabilities:
+          #   add: 
+          #     # - SYS_ADMIN
+          #     - SYS_MODULE
         volumeMounts:
           - mountPath: /exports
             name: mypvc

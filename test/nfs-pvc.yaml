@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs
-  namespace: nfs
+  name: nfs-test
+  # namespace: nfs
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
+  storageClassName: nfs-client
   resources:
     requests:
-      storage: 1Mi
+      storage: 1Gi

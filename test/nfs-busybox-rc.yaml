@@ -1,0 +1,40 @@
+# This mounts the nfs volume claim into /mnt and continuously
+# overwrites /mnt/index.html with the time and hostname of the pod.
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nfs-busybox
+  # namespace: nfs
+spec:
+  replicas: 1
+  selector:
+    name: nfs-busybox
+  template:
+    metadata:
+      # annotations:
+      #   container.apparmor.security.beta.kubernetes.io/nfs-busybox: localhost/erichough-nfs
+      labels:
+        name: nfs-busybox
+        app: nfs-busybox
+    spec:
+      containers:
+      - image: busybox
+        command:
+          - sh
+          - -c
+          - 'mkdir /mnt && while true; do date > /mnt/index.html; hostname >> /mnt/index.html; sleep $(($RANDOM % 5 + 5)); done'
+        imagePullPolicy: IfNotPresent
+        name: nfs-busybox
+        # securityContext:
+        #   capabilities:
+        #     add: 
+        #       - SYS_ADMIN
+        volumeMounts:
+          # name must match the volume name below
+          - name: nfs
+            mountPath: "/mnt"
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: nfs-test

@@ -2,12 +2,11 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-pv-provisioning
-  namespace: nfs
+  # namespace: nfs
 spec:
-  accessModes: [ "ReadWriteOnce" ]
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
-  selector:
-    matchLabels:
-      storage-type: nfs-local-pv
+  storageClassName: nfs-local-storage

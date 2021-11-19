@@ -18,19 +18,19 @@ spec:
       port: 2049
       targetPort: 2049
       protocol: UDP
-    - name: mountd
-      port: 20048
-    - name: rpcbind-tcp
-      port: 111
-      targetPort: 111
-      protocol: TCP
-    - name: rpcbind-upd
-      port: 111
-      targetPort: 111
-      protocol: UDP
-    - name: test1
-      port: 32765
-    - name: test2
-      port: 32766
+    # - name: mountd
+    #   port: 20048
+    # - name: rpcbind-tcp
+    #   port: 111
+    #   targetPort: 111
+    #   protocol: TCP
+    # - name: rpcbind-upd
+    #   port: 111
+    #   targetPort: 111
+    #   protocol: UDP
+    # - name: test1
+    #   port: 32765
+    # - name: test2
+    #   port: 32766
     - name: mountd2
       port: 32767

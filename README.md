@@ -3,6 +3,8 @@
 
 nable to attach or mount volumes: unmounted volumes=[nfs kube-api-access-gfzsb], unattached volumes=[nfs kube-api-access-gfzsb]: error processing PVC nfs/nfs-test: failed to fetch PVC from API server: persistentvolumeclaims "nfs-test" is forbidden: User "system:node:dev-srv" cannot get resource "persistentvolumeclaims" in API group "" in the namespace "nfs": no relationship found between node 'dev-srv' and this object 
 
+apk update && apk add nfs-utils
+
 mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 
 mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/test /mnt
@@ -56,7 +58,7 @@ apparmor сходит с ума а может и ещё что. профиль �
     ```BASH
     sudo apparmor_parser -r -W apparmor_profile
     # выгружаем если что
-    apparmor_parser -R apparmor_profile
+    sudo apparmor_parser -R apparmor_profile
     ```
 
     ```MD

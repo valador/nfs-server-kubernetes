@@ -29,7 +29,7 @@
 #   resources:
 #     requests:
 #       storage: 100Mi
-# ---
+# # ---
 # kind: Service
 # apiVersion: v1
 # metadata:
@@ -70,10 +70,10 @@ spec:
         #   - name: nfs
         #     containerPort: 2049
         # securityContext:
-          # privileged: true
-          # capabilities:
-          #   add: 
-          #     - SYS_ADMIN
+        #   # privileged: true
+        #   capabilities:
+        #     add: 
+        #       - SYS_ADMIN
       #   volumeMounts:
       #     - mountPath: /mnt
       #       name: nfs-mount

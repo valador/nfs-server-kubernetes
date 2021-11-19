@@ -1,6 +1,10 @@
 #include <tunables/global>
 profile erichough-nfs flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/lxc/container-base>
-  mount fstype=nfs*,
+  deny mount fstype=devpts,
+  mount fstype=nfs,
+  mount fstype=nfs4,
+  mount fstype=nfsd,
   mount fstype=rpc_pipefs,
+  mount fstype=cgroup -> /sys/fs/cgroup/**,
 }

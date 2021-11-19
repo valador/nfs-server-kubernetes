@@ -23,10 +23,11 @@ spec:
         command:
           - sh
           - -c
-          - 'mkdir /mnt && while true; do date > /mnt/index.html; hostname >> /mnt/index.html; sleep $(($RANDOM % 5 + 5)); done'
-        imagePullPolicy: IfNotPresent
+          - 'while true; do date > /mnt/index.html; hostname >> /mnt/index.html; sleep $(($RANDOM % 5 + 5)); done'
+        # imagePullPolicy: IfNotPresent
         name: nfs-busybox
-        # securityContext:
+        securityContext:
+          privileged: true
         #   capabilities:
         #     add: 
         #       - SYS_ADMIN

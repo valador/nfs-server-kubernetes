@@ -13,9 +13,9 @@ load-modules:
 nfs-up: load-modules
 	# sudo mkdir -p /mnt/data_store/nfs
 	# sudo chown nobody:nogroup /mnt/data_store/nfs
-	# sudo kubectl apply -f ./nfs-server-pv.yaml
+	sudo kubectl apply -f ./nfs-server-pv.yaml
 	# sudo kubectl apply -f ./nfs-server-pv-hostpath.yaml
-	# sudo kubectl apply -f ./nfs-server-pvc.yaml
+	sudo kubectl apply -f ./nfs-server-pvc.yaml
 	sudo kubectl apply -f ./nfs-server-service.yaml
 	# sudo kubectl apply -f ./nfs-server-rc.yaml
 	sudo kubectl apply -f ./nfs-server-custom.yaml
@@ -23,8 +23,8 @@ nfs-down:
 	sudo kubectl delete -f ./nfs-server-service.yaml
 	# sudo kubectl delete -f ./nfs-server-rc.yaml
 	sudo kubectl delete -f ./nfs-server-custom.yaml
-	# sudo kubectl delete -f ./nfs-server-pvc.yaml
-	# sudo kubectl delete -f ./nfs-server-pv.yaml
+	sudo kubectl delete -f ./nfs-server-pvc.yaml
+	sudo kubectl delete -f ./nfs-server-pv.yaml
 	# sudo kubectl delete -f ./nfs-server-pv-hostpath.yaml
 nfs-purge:
 	sudo rm -rf /mnt/data_store/nfs

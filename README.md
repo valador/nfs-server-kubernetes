@@ -1,18 +1,47 @@
 # nfs-server-kubernetes
+!!! РАЗРЕШЕНИЕ КОРНЯ, подмонтировать в ручную и потестить
 
-Unable to attach or mount volumes: unmounted volumes=[nfs kube-api-access-gfzsb], unattached volumes=[nfs kube-api-access-gfzsb]: error processing PVC nfs/nfs-test: failed to fetch PVC from API server: persistentvolumeclaims "nfs-test" is forbidden: User "system:node:dev-srv" cannot get resource "persistentvolumeclaims" in API group "" in the namespace "nfs": no relationship found between node 'dev-srv' and this object 
+nable to attach or mount volumes: unmounted volumes=[nfs kube-api-access-gfzsb], unattached volumes=[nfs kube-api-access-gfzsb]: error processing PVC nfs/nfs-test: failed to fetch PVC from API server: persistentvolumeclaims "nfs-test" is forbidden: User "system:node:dev-srv" cannot get resource "persistentvolumeclaims" in API group "" in the namespace "nfs": no relationship found between node 'dev-srv' and this object 
 
 mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 
-mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/ /mnt
-
-mount -t nfs 10.43.32.157:/ /mnt
+mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/test /mnt
+mount -t nfs nfs-server.default.svc.cluster.local:/test /mnt
 
 mount -v -t nfs -o vers=3,port=111 nfs-server.default.svc.cluster.local:/ /mnt
 
 sudo lsof -i -P -n | grep LISTEN
 
 sudo kubectl -n default get events --sort-by='{.lastTimestamp}'
+
+в рабочем:
+/run/secrets/kubernetes.io/serviceaccount
+nfs-server.default.svc.cluster.local:/test
+
+```BASH
+    # чекать днс в кластере
+    sudo kubectl run -it --rm --restart=Never busybox --image=busybox:1.28 -- nslookup nfs-server.default
+```
+
+  mountOptions:
+    - hard
+    - timeo=600
+    - retrans=3
+    - proto=tcp
+    - nfsvers=4.2
+    - port=2050
+    - rsize=4096
+    - wsize=4096
+    - noacl
+    - nocto
+    - noatime
+    - nodiratime
+
+NFS так и не работает как должен, либо контейнеры privileged: true либо SYS_ADMIN cap добавлять нужно.
+Притом как серверу так и клиенту а это - не камильфо.
+Весь косяк в том что у меня кубер крутится на убунте 20.04 которая в свою очередь крутится на virtualbox.
+apparmor сходит с ума а может и ещё что. профиль для lxc частично правит проблему но не решает её в корне.
+При загрузке пода с pv nfs - виснет наглухо не зависимо от опций.
 
 ## NFS
 

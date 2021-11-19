@@ -9,8 +9,8 @@ spec:
     role: nfs-server
   template:
     metadata:
-      # annotations:
-      #   container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/erichough-nfs
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/erichough-nfs
       labels:
         role: nfs-server
         app: nfs-server
@@ -20,29 +20,37 @@ spec:
         image: erichough/nfs-server:latest
         env:
           - name: NFS_EXPORT_0
-            value: "/exports *(rw,sync,crossmnt,fsid=0)"
+            value: "/exports *(rw,sync,crossmnt,no_subtree_check,fsid=0)"
           - name: NFS_EXPORT_1
             value: "/exports/test *(rw,sync,no_subtree_check,no_root_squash)"
           - name: NFS_LOG_LEVEL
             value: DEBUG
           # - name: NFS_PORT
           #   value: '2049'
-          # - name: NFS_VERSION
-          #   value: "4.2"
+          - name: NFS_VERSION
+            value: "4.2"
           - name: NFS_DISABLE_VERSION_3
             value: "1"
         ports:
-          - name: nfs
+          - name: nfs-tcp
             containerPort: 2049
-          # - name: mountd
-          #   containerPort: 20048
-          # - name: rpcbind
-          #   containerPort: 111
-          # - name: test1
-          #   containerPort: 32765
-          # - name: test2
-          #   containerPort: 32766
+            protocol: TCP
+          - name: nfs-udp
+            containerPort: 2049
+            protocol: UDP
           - name: mountd
+            containerPort: 20048
+          - name: rpcbind-tcp
+            containerPort: 111
+            protocol: TCP
+          - name: rpcbind-udp
+            containerPort: 111
+            protocol: UDP
+          - name: test1
+            containerPort: 32765
+          - name: test2
+            containerPort: 32766
+          - name: mountd2
             containerPort: 32767
         securityContext:
           privileged: true
@@ -51,26 +59,26 @@ spec:
           #     # - SYS_ADMIN
           #     - SYS_MODULE
         volumeMounts:
-          # - mountPath: /exports
-          #   name: mypvc
           - mountPath: /exports
-            name: data-store
+            name: mypvc
+          # - mountPath: /exports
+          #   name: data-store
           # - mountPath: /lib/modules
           #   name: modules
           #   readOnly: true
       volumes:
-        # - name: mypvc
-        #   persistentVolumeClaim:
-        #     claimName: nfs-pv-provisioning
+        - name: mypvc
+          persistentVolumeClaim:
+            claimName: nfs-pv-provisioning
         # - name: modules
         #   hostPath:
         #     path: /lib/modules
-        #     # this field is optional
-        #     # type: DirectoryOrCreate
-        - name: data-store
-          hostPath:
-            # directory location on host
-            path: /mnt/data_store/nfs/
+            # this field is optional
+            # type: DirectoryOrCreate
+        # - name: data-store
+        #   hostPath:
+        #     # directory location on host
+        #     path: /mnt/nfs-store
 # ---
 # apiVersion: v1
 # kind: PersistentVolume

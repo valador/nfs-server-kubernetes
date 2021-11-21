@@ -6,4 +6,5 @@ profile erichough-nfs flags=(attach_disconnected,mediate_deleted) {
   mount fstype=rpc_pipefs,
   mount options=(rw, bind, ro),
   mount fstype=cgroup -> /sys/fs/cgroup/**,
+  mount fstype=cgroup2 -> /sys/fs/cgroup/**,
 }

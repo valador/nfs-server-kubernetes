@@ -36,3 +36,10 @@ test-down:
 	sudo kubectl delete -f ./test/nfs-busybox-rc.yaml
 	sudo kubectl delete -f ./test/nfs-pvc.yaml
 	sudo kubectl delete -f ./test/nfs-pv.yaml
+.PHONY: build-ganesha
+build-ganesha:
+	docker build \
+		--file ./ganesha_debian/Dockerfile \
+		--tag slayerus/ganesha:latest \
+		./ganesha_debian/.
+	docker push slayerus/ganesha:latest

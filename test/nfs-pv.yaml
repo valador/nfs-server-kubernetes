@@ -10,7 +10,7 @@ spec:
     - ReadWriteMany
   storageClassName: nfs-client
   nfs:
-    server: nfs-server.default.svc.cluster.local
-    path: "/test"
-  mountOptions:
-    - nfsvers=4.2
+    server: dev-srv.home.lan
+    path: "/"
+  # mountOptions:
+  #   - nfsvers=4.2

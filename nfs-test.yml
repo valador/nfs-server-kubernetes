@@ -57,8 +57,8 @@ spec:
     role: nfs-test-role
   template:
     metadata:
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/nfs-test-role: localhost/erichough-nfs
+      # annotations:
+      #   container.apparmor.security.beta.kubernetes.io/nfs-test-role: localhost/erichough-nfs
       labels:
         role: nfs-test-role
         app: nfs-test-role

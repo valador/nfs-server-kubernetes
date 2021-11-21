@@ -9,10 +9,12 @@ mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 
 mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/test /mnt
 mount -t nfs nfs-server.default.svc.cluster.local:/test /mnt
-
+mount -t nfs dev-srv:/ /mnt/test
 mount -v -t nfs -o vers=3,port=111 nfs-server.default.svc.cluster.local:/ /mnt
-
+mount -v -t nfs -o proto=tcp,port=2049 dev-srv:/ /mnt/test
 sudo lsof -i -P -n | grep LISTEN
+
+заюзавть ganesha? 
 
 sudo kubectl -n default get events --sort-by='{.lastTimestamp}'
 

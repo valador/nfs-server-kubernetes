@@ -69,8 +69,8 @@ spec:
         # ports:
         #   - name: nfs
         #     containerPort: 2049
-        # securityContext:
-        #   # privileged: true
+        securityContext:
+          # privileged: true
         #   capabilities:
         #     add: 
         #       - SYS_ADMIN

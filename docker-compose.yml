@@ -4,9 +4,9 @@ services:
     image: slayerus/ganesha:latest
     container_name: nfs-server
     #restart: always
-    environment:
-      - EXPORT_PATH=/exports/nfs
-      - PROTOCOLS=4
+    # environment:
+    #   - EXPORT_PATH=/exports/nfs
+    #   - PROTOCOLS=4
     # cap_add:
     #   - SYS_ADMIN
     #   - DAC_READ_SEARCH

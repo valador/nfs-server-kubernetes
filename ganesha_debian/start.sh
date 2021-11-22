@@ -6,12 +6,16 @@ set -e
 : ${LOG_LEVEL:="NIV_EVENT"} # NIV_DEBUG
 : ${CONF_FILE:="/etc/ganesha/ganesha.my.conf"}
 : ${PID_FILE:="/var/run/ganesha.pid"}
-: ${RPC_STATD_PORT:="662"}
+#: ${RPC_STATD_PORT:="662"}
 
 function init_rpc {
-    echo "Starting rpcbind"
-    rpcbind -w || return 0
-    rpc.statd --port ${RPC_STATD_PORT} || return 0
+    echo "* Starting rpcbind"
+    if [ ! -x /run/rpcbind ] ; then
+        install -m755 -g 32 -o 32 -d /run/rpcbind
+    fi
+    rpcbind || return 0
+    rpc.statd -L || return 0
+    rpc.idmapd || return 0
     sleep 1
 }
 

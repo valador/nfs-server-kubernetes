@@ -58,7 +58,7 @@ spec:
   template:
     metadata:
       # annotations:
-      #   container.apparmor.security.beta.kubernetes.io/nfs-test-role: localhost/erichough-nfs
+      #   container.apparmor.security.beta.kubernetes.io/nfs-test-role: localhost/nfs-mount-container
       labels:
         role: nfs-test-role
         app: nfs-test-role
@@ -71,9 +71,10 @@ spec:
         #     containerPort: 2049
         securityContext:
           # privileged: true
-        #   capabilities:
-        #     add: 
-        #       - SYS_ADMIN
+          capabilities:
+            add: 
+              - SYS_ADMIN
+              # - DAC_READ_SEARCH
       #   volumeMounts:
       #     - mountPath: /mnt
       #       name: nfs-mount

@@ -9,23 +9,37 @@ help:
 load-modules:
 	# sudo modprobe {nfs,nfsd}
 # base nfs installation
-.PHONY: nfs-up nfs-down nfs-purge test-up test-down
-nfs-up: load-modules
+.PHONY: nfs-std-up nfs-std-down nfs-purge test-up test-down
+nfs-std-up: load-modules
 	# sudo mkdir -p /mnt/data_store/nfs
 	# sudo chown nobody:nogroup /mnt/data_store/nfs
-	sudo kubectl apply -f ./nfs-server-pv.yaml
-	# sudo kubectl apply -f ./nfs-server-pv-hostpath.yaml
-	sudo kubectl apply -f ./nfs-server-pvc.yaml
-	sudo kubectl apply -f ./nfs-server-service.yaml
-	# sudo kubectl apply -f ./nfs-server-rc.yaml
-	sudo kubectl apply -f ./nfs-server-custom.yaml
-nfs-down:
-	sudo kubectl delete -f ./nfs-server-service.yaml
-	# sudo kubectl delete -f ./nfs-server-rc.yaml
-	sudo kubectl delete -f ./nfs-server-custom.yaml
-	sudo kubectl delete -f ./nfs-server-pvc.yaml
-	sudo kubectl delete -f ./nfs-server-pv.yaml
-	# sudo kubectl delete -f ./nfs-server-pv-hostpath.yaml
+	sudo kubectl apply -f ./kuber_std_nfs/nfs-server-pv.yaml
+	# sudo kubectl apply -f ./kuber_std_nfs/nfs-server-pv-hostpath.yaml
+	sudo kubectl apply -f ./kuber_std_nfs/nfs-server-pvc.yaml
+	sudo kubectl apply -f ./kuber_std_nfs/nfs-server-service.yaml
+	# sudo kubectl apply -f ./kuber_std_nfs/nfs-server-rc.yaml
+	sudo kubectl apply -f ./kuber_std_nfs/nfs-server-custom.yaml
+nfs-std-down:
+	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-service.yaml
+	# sudo kubectl delete -f ./kuber_std_nfs/nfs-server-rc.yaml
+	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-custom.yaml
+	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pvc.yaml
+	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pv.yaml
+	# sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pv-hostpath.yaml
+nfs-gan-up:
+	# sudo mkdir -p /mnt/data_store/nfs
+	# sudo chown nobody:nogroup /mnt/data_store/nfs
+	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-conf.yml
+	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
+	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
+	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-service.yaml
+	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-rc.yaml
+nfs-gan-down:
+	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-service.yaml
+	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-rc.yaml
+	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
+	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
+	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-conf.yml
 nfs-purge:
 	sudo rm -rf /mnt/data_store/nfs
 test-up: load-modules

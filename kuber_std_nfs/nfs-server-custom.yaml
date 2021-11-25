@@ -9,8 +9,8 @@ spec:
     role: nfs-server
   template:
     metadata:
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/erichough-nfs
+      # annotations:
+      #   container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/nfs-mount-container
       labels:
         role: nfs-server
         app: nfs-server
@@ -22,7 +22,7 @@ spec:
           - name: NFS_EXPORT_0
             value: "/exports *(rw,sync,crossmnt,no_subtree_check,fsid=0)"
           - name: NFS_EXPORT_1
-            value: "/exports/test *(rw,sync,no_subtree_check,no_root_squash)"
+            value: "/exports/gitlab *(rw,sync,no_subtree_check,no_root_squash)"
           - name: NFS_LOG_LEVEL
             value: DEBUG
           # - name: NFS_PORT

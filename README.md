@@ -8,9 +8,9 @@ apk update && apk add nfs-utils
 mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 
 mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/test /mnt
-mount -t nfs nfs-server.default.svc.cluster.local:/test /mnt
+mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 mount -t nfs dev-srv:/ /mnt/test
-mount -v -t nfs -o vers=3,port=111 nfs-server.default.svc.cluster.local:/ /mnt
+mount -v -t nfs -o vers=4,port=2049 nfs-server.default.svc.cluster.local:/ /mnt
 mount -v -t nfs -o proto=tcp,port=2049 dev-srv:/ /mnt
 sudo lsof -i -P -n | grep LISTEN
 
@@ -81,4 +81,11 @@ apparmor сходит с ума а может и ещё что. профиль �
     sudo systemctl mask rpcbind
     sudo systemctl stop rpcbind.socket
     sudo systemctl disable rpcbind.socket
+    ```
+
+4. Подымает nfs server, в Virtualbox можно подконнектится только если в поде указать SYS_ADMIN, иначе никак. 
+    Как на голом железе с кубером - не тертировалось.
+
+    ```BASH
+    make nfs-std-up
     ```

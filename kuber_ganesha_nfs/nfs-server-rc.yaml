@@ -9,15 +9,19 @@ spec:
     role: nfs-server
   template:
     metadata:
-      # annotations:
-      #   container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/nfs-mount-container
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/nfs-server: localhost/nfs-mount-container
       labels:
         role: nfs-server
         app: nfs-server
     spec:
       containers:
       - name: nfs-server
-        image: slayerus/ganesha:latest
+        image: slayerus/ganesha:izdock
+        imagePullPolicy: Always
+        env:
+        - name: EXPORT_PATH
+          value: "/exports"
         ports:
           - name: nfs-tcp
             containerPort: 2049
@@ -31,9 +35,10 @@ spec:
           #   add: 
           #     - SYS_ADMIN
           #     - DAC_READ_SEARCH
+          #     - SYS_RESOURCE
         volumeMounts:
-          - name: ganesha-config
-            mountPath: /etc/ganesha
+          # - name: ganesha-config
+          #   mountPath: /etc/ganesha
           - mountPath: /exports
             name: mypvc
           # - mountPath: /exports

@@ -7,7 +7,7 @@ help:
 	make -pRrq -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
 .PHONY: load-modules
 load-modules:
-	# sudo modprobe {nfs,nfsd}
+	sudo modprobe {nfs,nfsd}
 # base nfs installation
 .PHONY: nfs-std-up nfs-std-down nfs-purge test-up test-down
 nfs-std-up: load-modules
@@ -27,21 +27,23 @@ nfs-std-down:
 	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pv.yaml
 	# sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pv-hostpath.yaml
 nfs-gan-up:
-	# sudo mkdir -p /mnt/data_store/nfs
+	sudo mkdir -p /mnt/nfs-store
 	# sudo chown nobody:nogroup /mnt/data_store/nfs
+	sudo kubectl apply -f ./kuber_ganesha_nfs/psp.yaml
 	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-conf.yml
-	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
-	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
+	# sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
+	# sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
 	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-service.yaml
 	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-rc.yaml
 nfs-gan-down:
 	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-service.yaml
 	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-rc.yaml
-	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
-	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
+	# sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
+	# sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
 	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-conf.yml
+	sudo kubectl delete -f ./kuber_ganesha_nfs/psp.yaml
 nfs-purge:
-	sudo rm -rf /mnt/data_store/nfs
+	sudo rm -rf /mnt/nfs-store
 test-up: load-modules
 	sudo kubectl apply -f ./test/nfs-pv.yaml
 	sudo kubectl apply -f ./test/nfs-pvc.yaml
@@ -50,10 +52,22 @@ test-down:
 	sudo kubectl delete -f ./test/nfs-busybox-rc.yaml
 	sudo kubectl delete -f ./test/nfs-pvc.yaml
 	sudo kubectl delete -f ./test/nfs-pv.yaml
-.PHONY: build-ganesha
-build-ganesha:
+.PHONY: build-ganesha-debian build-ganesha-fedora build-ganesha-izdock
+build-ganesha-debian:
 	docker build \
 		--file ./ganesha_debian/Dockerfile \
-		--tag slayerus/ganesha:latest \
+		--tag slayerus/ganesha:debian \
 		./ganesha_debian/.
-	docker push slayerus/ganesha:latest
+	docker push slayerus/ganesha:debian
+build-ganesha-fedora:
+	docker build \
+		--file ./ganesha_fedora/Dockerfile \
+		--tag slayerus/ganesha:fedora \
+		./ganesha_fedora/.
+	docker push slayerus/ganesha:fedora
+build-ganesha-izdock:
+	docker build \
+		--file ./izdock-nfs-ganesha/Dockerfile \
+		--tag slayerus/ganesha:izdock \
+		./izdock-nfs-ganesha/.
+	docker push slayerus/ganesha:izdock

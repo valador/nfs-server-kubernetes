@@ -5,12 +5,12 @@ nable to attach or mount volumes: unmounted volumes=[nfs kube-api-access-gfzsb],
 
 apk update && apk add nfs-utils
 
-mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
+mount -t nfs nfs-server.default.svc.cluster.local:/exports /mnt
 
-mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/test /mnt
+mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/exports /mnt
 mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 mount -t nfs dev-srv:/ /mnt/test
-mount -v -t nfs -o vers=4,port=2049 nfs-server.default.svc.cluster.local:/ /mnt
+mount -v -t nfs -o vers=4,port=2049 nfs-server.default.svc.cluster.local:/exports /mnt
 mount -v -t nfs -o proto=tcp,port=2049 dev-srv:/ /mnt
 sudo lsof -i -P -n | grep LISTEN
 
@@ -89,3 +89,10 @@ apparmor сходит с ума а может и ещё что. профиль �
     ```BASH
     make nfs-std-up
     ```
+с `privileged: true` работает только если выставить на сервере и на клиентах
+сервер - `privileged: true` + apparmor профиль
+клиент - `SYS_ADMIN` и apparmor профилем - монтирует - РАБОЧИЙ ВАРИАНТ
+клиент - без капов но с apparmor профилем - `mount: permission denied (are you root?)`
+клиент - капы DAC_READ_SEARCH, SYS_RESOURCE и apparmor профилем - `mount: permission denied (are you root?)`
+сервер - с капами SYS_ADMIN и прочее + apparmor профиль
+клиент - с капами SYS_ADMIN и профилем - `mount: mounting nfs-server.default.svc.cluster.local:/exports on /mnt failed: No such file or directory`

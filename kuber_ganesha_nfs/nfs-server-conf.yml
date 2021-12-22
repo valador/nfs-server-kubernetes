@@ -8,12 +8,12 @@ data:
   ganesha.conf: |+
     EXPORT_DEFAULTS
     {
-        Transports = TCP,UDP;
+        Transports = TCP;
         SecType = sys;
     }
     EXPORT
     {
-        Export_Id = 1;
+        Export_Id = 1001;
         Path = /exports;
         Pseudo = /;
         Protocols = 4;

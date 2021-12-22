@@ -37,8 +37,8 @@ spec:
           #     - DAC_READ_SEARCH
           #     - SYS_RESOURCE
         volumeMounts:
-          # - name: ganesha-config
-          #   mountPath: /etc/ganesha
+          - name: ganesha-config
+            mountPath: /etc/ganesha
           - mountPath: /exports
             name: mypvc
           # - mountPath: /exports

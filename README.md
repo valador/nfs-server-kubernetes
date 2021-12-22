@@ -10,17 +10,13 @@ mount -t nfs nfs-server.default.svc.cluster.local:/exports /mnt
 mount -t nfs -o proto=tcp,port=2049 nfs-server.default.svc.cluster.local:/exports /mnt
 mount -t nfs nfs-server.default.svc.cluster.local:/ /mnt
 mount -t nfs dev-srv:/ /mnt/test
-mount -v -t nfs -o vers=4,port=2049 nfs-server.default.svc.cluster.local:/exports /mnt
+mount -v -t nfs -o vers=4,port=2049 nfs-server.default.svc.cluster.local:/ /mnt
 mount -v -t nfs -o proto=tcp,port=2049 dev-srv:/ /mnt
 sudo lsof -i -P -n | grep LISTEN
 
 заюзавть ganesha? 
 
 sudo kubectl -n default get events --sort-by='{.lastTimestamp}'
-
-в рабочем:
-/run/secrets/kubernetes.io/serviceaccount
-nfs-server.default.svc.cluster.local:/test
 
 ```BASH
     # чекать днс в кластере
@@ -47,12 +43,16 @@ NFS так и не работает как должен, либо контейн
 apparmor сходит с ума а может и ещё что. профиль для lxc частично правит проблему но не решает её в корне.
 При загрузке пода с pv nfs - виснет наглухо не зависимо от опций.
 
+### Обязательно требуется присвоить clusterIP так как при инициализации
+### PV не пробивается внутренний днс, а только наружный
+
 ## NFS
 
 1. для работы правила apparmor нужно поставить lxc
 
     ```BASH
-    apt-get install lxc --no-install-recommends
+    sudo apt-get install lxc --no-install-recommends
+    sudo apt-get install -y nfs-common 
     ```
 
 2. Далее загружаем правило
@@ -84,7 +84,7 @@ apparmor сходит с ума а может и ещё что. профиль �
     ```
 
 4. Подымает nfs server, в Virtualbox можно подконнектится только если в поде указать SYS_ADMIN, иначе никак. 
-    Как на голом железе с кубером - не тертировалось.
+    Как на голом железе с кубером - не тестировалось.
 
     ```BASH
     make nfs-std-up

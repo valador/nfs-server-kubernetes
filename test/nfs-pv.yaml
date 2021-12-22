@@ -10,7 +10,11 @@ spec:
     - ReadWriteMany
   storageClassName: nfs-client
   nfs:
-    server: dev-srv.home.lan
-    path: "/"
-  # mountOptions:
-  #   - nfsvers=4.2
+    server: 10.43.232.3
+    path: "/test"
+  mountOptions:
+    - vers=4
+    - proto=tcp
+    - port=2049
+    - sync
+    - noacl

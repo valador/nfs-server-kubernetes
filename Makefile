@@ -26,10 +26,10 @@ nfs-std-down:
 	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pvc.yaml
 	sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pv.yaml
 	# sudo kubectl delete -f ./kuber_std_nfs/nfs-server-pv-hostpath.yaml
-nfs-gan-up:
+nfs-gan-up: load-modules
 	sudo mkdir -p /mnt/nfs-store
 	# sudo chown nobody:nogroup /mnt/data_store/nfs
-	sudo kubectl apply -f ./kuber_ganesha_nfs/psp.yaml
+	# sudo kubectl apply -f ./kuber_ganesha_nfs/psp.yaml
 	sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-conf.yml
 	# sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
 	# sudo kubectl apply -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
@@ -41,7 +41,7 @@ nfs-gan-down:
 	# sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pvc.yaml
 	# sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-pv.yaml
 	sudo kubectl delete -f ./kuber_ganesha_nfs/nfs-server-conf.yml
-	sudo kubectl delete -f ./kuber_ganesha_nfs/psp.yaml
+	# sudo kubectl delete -f ./kuber_ganesha_nfs/psp.yaml
 nfs-purge:
 	sudo rm -rf /mnt/nfs-store
 test-up: load-modules

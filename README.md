@@ -18,6 +18,9 @@ sudo lsof -i -P -n | grep LISTEN
 
 sudo kubectl -n default get events --sort-by='{.lastTimestamp}'
 
+https://github.com/ehough/docker-nfs-server
+https://github.com/sjiveson/nfs-server-alpine
+
 ```BASH
     # чекать днс в кластере
     sudo kubectl run -it --rm --restart=Never busybox --image=busybox:1.28 -- nslookup nfs-server.default

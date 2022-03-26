@@ -1,1 +1,4 @@
 export REGISTRY="slayerus/ganesha"
+
+capsh --print | grep -Eq "^Current: = .*,?'sys_module'(,|$)"
+capsh --print | grep -Eq "^Current: = .*,?'cap_sys_admin'(,|$)"

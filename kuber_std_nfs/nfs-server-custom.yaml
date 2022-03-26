@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nfs-server
-        image: erichough/nfs-server:latest
+        image: slayerus/nfs-std:alpine
         env:
           - name: NFS_EXPORT_0
             value: "/exports *(rw,sync,crossmnt,no_subtree_check,fsid=0)"
@@ -57,6 +57,7 @@ spec:
           # capabilities:
           #   add: 
           #     - SYS_ADMIN
+          #     - SETPCAP
           #     - SYS_MODULE
         volumeMounts:
           - mountPath: /exports

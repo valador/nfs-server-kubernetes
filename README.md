@@ -14,7 +14,14 @@ mount -v -t nfs -o vers=4,port=2049 nfs-server.default.svc.cluster.local:/ /mnt
 mount -v -t nfs -o proto=tcp,port=2049 dev-srv:/ /mnt
 sudo lsof -i -P -n | grep LISTEN
 
-заюзавть ganesha? 
+Приветствую, подскажите, есть шары NFS
+/exports *(rw,sync,crossmnt,no_subtree_check,fsid=0)
+/exports/media *(rw,sync,no_subtree_check,no_root_squash)
+монтирую: mount -v -t nfs -o vers=4,port=2049 192.168.1.3:/media /mnt
+Проблема - media должен монтироваться и сохранять права root (согласно опции no_root_squash) но этого не происходит, все файлы имеют права nobody как у корня шары(/exports) кто нибудь сталкивался с таким? Как решить?
+
+# Для гитлаба (не помогло)
+sudo chmod -R 777 /mnt/nfs-store/gitlab
 
 sudo kubectl -n default get events --sort-by='{.lastTimestamp}'
 

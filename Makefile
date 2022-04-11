@@ -48,13 +48,15 @@ nfs-gan-down:
 nfs-purge:
 	sudo rm -rf /mnt/nfs-store
 test-up: load-modules
-	sudo kubectl apply -f ./test/nfs-pv.yaml
-	sudo kubectl apply -f ./test/nfs-pvc.yaml
-	sudo kubectl apply -f ./test/nfs-busybox-rc.yaml
+	# sudo kubectl apply -f ./test/nfs-pv.yaml
+	# sudo kubectl apply -f ./test/nfs-pvc.yaml
+	# sudo kubectl apply -f ./test/nfs-busybox-rc.yaml
+	sudo kubectl apply -f ./nfs-test.yml
 test-down:
-	sudo kubectl delete -f ./test/nfs-busybox-rc.yaml
-	sudo kubectl delete -f ./test/nfs-pvc.yaml
-	sudo kubectl delete -f ./test/nfs-pv.yaml
+	# sudo kubectl delete -f ./test/nfs-busybox-rc.yaml
+	# sudo kubectl delete -f ./test/nfs-pvc.yaml
+	# sudo kubectl delete -f ./test/nfs-pv.yaml
+	sudo kubectl delete -f ./nfs-test.yml
 .PHONY: build-ganesha-debian build-ganesha-fedora build-ganesha-izdock build-std-nfs
 build-ganesha-debian:
 	docker build \

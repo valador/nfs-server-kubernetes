@@ -56,8 +56,8 @@ spec:
     role: nfs-test-role
   template:
     metadata:
-      annotations:
-        container.apparmor.security.beta.kubernetes.io/nfs-test-role: localhost/nfs-mount-container
+      # annotations:
+      #   container.apparmor.security.beta.kubernetes.io/nfs-test-role: localhost/nfs-mount-container
       labels:
         role: nfs-test-role
         app: nfs-test-role
@@ -73,10 +73,10 @@ spec:
         #   - name: nfs
         #     containerPort: 2049
         securityContext:
-        #   privileged: true
-          capabilities:
-            add: 
-              - SYS_ADMIN
+          privileged: true
+          # capabilities:
+          #   add: 
+          #     - SYS_ADMIN
               # - DAC_READ_SEARCH
               # - SYS_RESOURCE
       #   volumeMounts:
